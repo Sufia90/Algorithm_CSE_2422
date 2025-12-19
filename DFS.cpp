@@ -1,35 +1,48 @@
-#include <iostream>
+include <iostream>
 #include <vector>
 using namespace std;
 
-vector<vector<int>> graph;
-vector<bool> visited;
+void dfs(int node, vector<vector<int>> &adj, vector<bool> &visited) {
 
-void dfs(int node) {
     visited[node] = true;
     cout << node << " ";
 
-    for (int nbr : graph[node]) {
-        if (!visited[nbr]) dfs(nbr);
+    for (int neighbor : adj[node]) {
+        if (!visited[neighbor]) {
+            dfs(neighbor, adj, visited);
+        }
     }
 }
 
 int main() {
-    int n, e;
-    cin >> n >> e;
 
-    graph.resize(n);
-    visited.assign(n, false);
+    int n, e;
+    cout << "Enter number of vertices: ";
+    cin >> n;
+
+    cout << "Enter number of edges: ";
+    cin >> e;
+
+    vector<vector<int>> adj(n);
 
     for (int i = 0; i < e; i++) {
         int u, v;
+        cout << "Enter edge (u v): ";
         cin >> u >> v;
-        graph[u].push_back(v);
-        graph[v].push_back(u);
+
+        adj[u].push_back(v);
+        adj[v].push_back(u);
     }
 
     int start;
+    cout << "Enter starting vertex: ";
     cin >> start;
 
-    dfs(start);
+    vector<bool> visited(n, false);
+
+    cout << "DFS traversal: ";
+    dfs(start, adj, visited);
+
+    return 0;
 }
+
